@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		background: theme('colors.white');
+		color: theme('colors.gray');
+	}
+
+	img {
+		min-width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	svg {
+		fill: theme('colors.gray-light');
+	}
+
+	input[type='checkbox'] {
+		border: none;
+		outline: none;
+	}
+}
+
+@layer components {
+	.btn {
+		background: theme('colors.gray');
+		color: theme('colors.white');
+		outline: none;
+		border: none;
+		@apply rounded-lg;
+		@apply px-7 py-2;
+		@apply font-bold;
+	}
+
+	.btn:hover {
+		background: theme('colors.gray-light');
+	}
+
+	.img-wrapper {
+		width: 100px;
+		height: 100px;
+	}
+
+	.input-box {
+		display: flex;
+		flex-direction: column;
+		@apply gap-y-[.5rem];
+	}
+
+	.input-label {
+		@apply font-semibold;
+		color: theme('colors.gray');
+	}
+
+	.input-text {
+		background: theme('colors.white-smoke');
+		@apply rounded-lg;
+	}
+}
