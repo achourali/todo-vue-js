@@ -5,13 +5,13 @@
 	>
 		<h2 class="font-semibold text-2xl">todo</h2>
 		<router-link to="/add"><PlusIcon class="h-7 w-7" /></router-link>
-		<FilterNav @filterChange="$event" :getFilters="getFiltersChoices" />
+		<FilterNav :getFilters="getFiltersChoices" />
 	</div>
 
 	<ul class="todos-list flex flex-col gap-y-5">
 		<p v-if="filterMessage !== ''" class="self-center uppercase font-semibold">{{ filterMessage }}</p>
 		<li v-for="(todo, index) in filteredTodos" :key="index" class="todos-item">
-			<Todo class="w-full" :todo="todo" :index="index" />
+			<Todo class="w-full" :todo="todo" @delete="handleDelete" :index="index" />
 		</li>
 	</ul>
 </template>
@@ -40,9 +40,19 @@ export default {
 	},
 	mounted() {
 		this.todos = this.todosList;
+
 		window.addEventListener('scroll', this.updateScroll);
 	},
 	methods: {
+		handleDelete(id) {
+			if (!(this.todos.length - 1)) {
+				this.$router.go();
+			}
+
+			this.todos = this.todos.filter((todo) => {
+				return todo.id !== id;
+			});
+		},
 		getFiltersChoices(filterName) {
 			const tagsChoiceIndex = this.filtersCurrentChoices.findIndex((t) => t === filterName);
 
@@ -54,12 +64,16 @@ export default {
 		},
 		updateScroll() {
 			this.scrollPosition = window.pageYOffset;
-			console.log(this.scrollPosition);
 		}
 	},
 	computed: {
 		filteredTodos() {
-			if (!this.filtersCurrentChoices.length) return this.todos;
+			if (!this.filtersCurrentChoices.length) {
+				if (!this.filterMessage == '') {
+					this.filterMessage = '';
+				}
+				return this.todos;
+			}
 
 			const currentArr = this.todos.filter((todo) =>
 				this.filtersCurrentChoices.every((filter) => todo.tags.includes(filter))
@@ -67,7 +81,6 @@ export default {
 
 			if (!currentArr.length) {
 				this.filterMessage = 'no result for the filter';
-				console.log('NO MATCH FOR FILTERING TAG');
 				return;
 			}
 

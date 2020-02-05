@@ -5,14 +5,14 @@
 			<div v-clickOutside="closeModal">
 				<DotsHorizontalIcon class="h-5 w-5" @click="openModal" />
 				<div class="todo_actions flex flex-col rounded-lg" v-if="showModal">
-					<a href="#" class="px-3.5 py-2 border-b-2 flex items-center justify-between">
+					<div class="px-3.5 py-2 border-b-2 flex items-center justify-between">
 						<p>Edit</p>
 						<PencilAltIcon class="h-5 w-5" />
-					</a>
-					<a href="#" class="px-3.5 py-2 flex items-center justify-between">
+					</div>
+					<div class="px-3.5 py-2 flex items-center justify-between" @click="deleteTodo">
 						<p>Delete</p>
 						<TrashIcon class="h-5 w-5" />
-					</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -66,7 +66,8 @@ export default {
 	},
 	data() {
 		return {
-			showModal: false
+			showModal: false,
+			uri: 'http://localhost:3000/todos/' + this.todo.id
 		};
 	},
 	directives: {
@@ -78,6 +79,13 @@ export default {
 		},
 		closeModal() {
 			this.showModal = false;
+		},
+		deleteTodo() {
+			fetch(this.uri, {
+				method: 'DELETE'
+			})
+				.then(() => this.$emit('delete', this.todo.id))
+				.catch((err) => console.log(err));
 		}
 	},
 	mounted() {
