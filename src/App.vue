@@ -1,30 +1,25 @@
 <template>
-	<nav>
-		<router-link to="/">Home</router-link> |
-		<router-link to="/about">About</router-link>
-	</nav>
-	<router-view />
+	<Loader />
+	<div class="container p-3.5 h-screen">
+		<router-view />
+	</div>
 </template>
 
-<style>
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-}
+<script>
+import Loader from '@/components/Loader.vue';
+import HelloApp from '@/components/HelloApp.vue';
 
-nav {
-	padding: 30px;
-}
+export default {
+	components: {
+		Loader,
+		HelloApp
+	},
+	data() {
+		return {
+			todos: []
+		};
+	}
+};
+</script>
 
-nav a {
-	font-weight: bold;
-	color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-	color: #42b983;
-}
-</style>
+<style></style>
