@@ -7,12 +7,10 @@
 
 <script>
 import Loader from '@/components/Loader.vue';
-import HelloApp from '@/components/HelloApp.vue';
 
 export default {
 	components: {
-		Loader,
-		HelloApp
+		Loader
 	},
 	data() {
 		return {
