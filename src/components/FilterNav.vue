@@ -6,7 +6,7 @@
 			v-for="(tag, index) in tagsData"
 			:key="index"
 			ref="items"
-			@click="updateFilter(tag, index), getFilters(tag)"
+			@click="updateFilter(index), getFilters(tag)"
 			class="tags-item flex items-center gap-x-2 w-full py-1 px-3 rounded-lg"
 		>
 			<Tag :tagName="tag">
@@ -22,7 +22,6 @@ import Tag from '@/components/Tag.vue';
 export default {
 	name: 'FilterNav',
 	props: ['getFilters'],
-	emits: ['filterChange'],
 	components: {
 		Tag
 	},
@@ -32,9 +31,8 @@ export default {
 		};
 	},
 	methods: {
-		updateFilter(filterName, filterIndex) {
+		updateFilter(filterIndex) {
 			this.$refs.items[filterIndex].classList.toggle('tag-active');
-			this.$emit('filterChange', filterName);
 		}
 	}
 };
