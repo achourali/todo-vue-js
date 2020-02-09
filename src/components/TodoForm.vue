@@ -1,11 +1,11 @@
 <template>
 	<form @submit.prevent="handleSubmit" class="flex flex-col h-full">
 		<div class="form-actions flex items-center justify-between">
-			<router-link to="/" class="text-2xl">cancel</router-link>
-			<button class="btn">Add</button>
+			<a @click="closeModal" class="text-2xl">cancel</a>
+			<Button type="submit">Add</Button>
 		</div>
 
-		<div class="flex flex-col gap-y-10 mt-20">
+		<div class="flex flex-col gap-y-10 mt-20 md:mt-10">
 			<div class="input-box">
 				<label class="input-label">Title</label>
 				<input type="text" class="input-text p-3.5" v-model="title" placeholder="add title..." />
@@ -23,7 +23,7 @@
 
 		<div class="tags flex-col mt-10">
 			<p class="input-label mb-2">Tags</p>
-			<ul class="tags-list flex flex-col gap-y-4">
+			<ul class="tags-list flex flex-col md:flex-row gap-y-4 md:gap-x-2">
 				<li
 					v-for="(tag, index) in tagsData"
 					:key="index"
@@ -38,22 +38,27 @@
 			</ul>
 		</div>
 	</form>
+	{{ tagsChoice }}
 </template>
 
 <script>
 import Tag from '@/components/Tag.vue';
+import Button from '@/components/Button.vue';
 
 export default {
-	name: 'AddTodo',
+	name: 'Form',
+	props: ['todosList', 'isEdit', 'closeModal'],
 	components: {
-		Tag
+		Tag,
+		Button
 	},
 	data() {
 		return {
 			title: '',
 			description: '',
 			tagsData: ['work', 'study', 'entertainment', 'familly'],
-			tagsChoice: []
+			tagsChoice: [],
+			isEdit: false
 		};
 	},
 	methods: {
@@ -71,7 +76,12 @@ export default {
 				body: JSON.stringify(todo)
 			})
 				.then(() => {
-					this.$router.push('/');
+					if (!this.todosList.length) {
+						setTimeout(() => {
+							window.location.reload();
+						}, 1000);
+					}
+					this.closeModal();
 				})
 				.catch((err) => {
 					console.log(err);
@@ -89,6 +99,19 @@ export default {
 			this.$refs.items[index].classList.toggle('tag-active');
 		}
 	}
+	// mounted() {
+	// 	if (this.isEdit) {
+	// 		this.title = todo.title;
+	// 		this.description = todo.description;
+	// 		this.tags = todo.tags;
+
+	// 		this.tagsChoice.some((tag, idx) => {
+	// 			if (this.tagsData.includes(tag)) {
+	// 				this.$refs.items[idx].classList.add('tag-active');
+	// 			}
+	// 		});
+	// 	}
+	// }
 };
 </script>
 

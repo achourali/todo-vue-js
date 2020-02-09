@@ -29,8 +29,9 @@
 					class="checkbox"
 					type="checkbox"
 					:id="'checkbox' + index"
-					v-model="todo.complete"
 					ref="todoInput"
+					v-model="todo.complete"
+					@click="toggleComplete"
 				/>
 			</div>
 		</div>
@@ -76,15 +77,30 @@ export default {
 	methods: {
 		openModal() {
 			this.showModal = !this.showModal;
+			document.body.style.overflow = 'hidden';
 		},
 		closeModal() {
 			this.showModal = false;
+			document.body.style.overflow = 'auto';
 		},
 		deleteTodo() {
 			fetch(this.uri, {
 				method: 'DELETE'
 			})
 				.then(() => this.$emit('delete', this.todo.id))
+				.catch((err) => console.log(err));
+		},
+		toggleComplete() {
+			fetch(this.uri, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					complete: !this.todo.complete
+				})
+			})
+				.then(() => {
+					this.$emit('complete', this.todo.id);
+				})
 				.catch((err) => console.log(err));
 		}
 	},
