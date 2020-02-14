@@ -1,33 +1,3 @@
 {
-  "todos": [
-    {
-      "title": "test todo",
-      "description": "test todo",
-      "complete": false,
-      "tags": [
-        "study",
-        "entertainment"
-      ],
-      "id": 1
-    },
-    {
-      "title": "dsfgfsdg",
-      "description": "dfgdfgdf",
-      "complete": false,
-      "tags": [
-        "entertainment"
-      ],
-      "id": 2
-    },
-    {
-      "title": "sfsdfds",
-      "description": "sdfdsfsdf",
-      "complete": false,
-      "tags": [
-        "work",
-        "study"
-      ],
-      "id": 3
-    }
-  ]
+  "todos": []
 }
