@@ -10,7 +10,7 @@
 			Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam, sed quasi consequatur placeat
 			aut molestias consequuntur veritatis.
 		</p>
-		<Button @click="openModal" class="mt-12">Get Started</Button>
+		<Button @click="handleFormModal" :class="'mt-12'">Get Started</Button>
 		<div class="flex items-center">
 			<div class="img-wrapper">
 				<img src="@/assets/images/image-1.png" alt="" />
@@ -24,38 +24,29 @@
 		</div>
 		<Todo class="w-[80%]" :todo="todo" />
 	</div>
-
-	<template v-if="showModal">
-		<div class="modal-overlay w-full h-full"></div>
-		<div class="modal-form rounded-lg w-[600px] fixed top-2/4 left-2/4 p-5">
-			<TodoForm :closeModal="closeModal" :class="{ isOpen: showModal }" :todosList="todosList" />
-		</div>
-	</template>
 </template>
 <script>
+import { mapState } from 'vuex';
 import Todo from '@/components/Todo.vue';
-import TodoForm from '@/components/TodoForm.vue';
+
 import Button from '@/components/Button.vue';
 
 export default {
-	props: ['todosList'],
 	name: 'HelloApp',
 	components: {
 		Todo,
-		TodoForm,
 		Button
 	},
 	data() {
 		return {
 			todo: {
 				title: 'Download todo app',
-				description: 'he first step for better life',
+				description: 'It is the first step for better life',
 				complete: true,
 				tags: ['work', 'study']
 			},
 			colors: ['#D2CEFF', '#FFCECE', '#D1E5F7', '#DAF2D6'],
-			color: null,
-			showModal: false
+			color: null
 		};
 	},
 	methods: {
@@ -65,34 +56,15 @@ export default {
 				letter.style.color = this.color;
 			});
 		},
-		openModal() {
-			console.log('open modal child component');
-			this.showModal = !this.showModal;
-			document.body.style.overflow = 'hidden';
-		},
-		closeModal() {
-			this.showModal = false;
-			document.body.style.overflow = 'auto';
+		handleFormModal() {
+			this.$store.dispatch('handleFormStatusModal');
 		}
 	},
 	mounted() {
 		this.randomColor();
-	}
+	},
+	computed: { ...mapState(['todos']) }
 };
 </script>
 
-<style>
-.modal-overlay {
-	background: theme('colors.gray-light');
-	opacity: 0.5;
-	position: fixed;
-	top: 0;
-	left: 0;
-	pointer-events: none;
-}
-.modal-form {
-	background: theme('colors.white');
-	transform: translate(-50%, -50%);
-	z-index: 100;
-}
-</style>
+<style></style>

@@ -1,12 +1,10 @@
-// TODO: FilterNav feature: refacto: - transformer la ligne 26 à 38 du fichier src/views/AddTodo.vue
-
 <template>
 	<ul class="w-full tags-list flex gap-x-4 overflow-x-auto">
 		<li
 			v-for="(tag, index) in tagsData"
 			:key="index"
 			ref="items"
-			@click="updateFilter(index), getFilters(tag)"
+			@click="updateFilter(index, tag)"
 			class="tags-item flex items-center gap-x-2 w-full py-1 px-3 rounded-lg"
 		>
 			<Tag :tagName="tag">
@@ -21,7 +19,6 @@ import Tag from '@/components/Tag.vue';
 
 export default {
 	name: 'FilterNav',
-	props: ['getFilters'],
 	components: {
 		Tag
 	},
@@ -31,7 +28,8 @@ export default {
 		};
 	},
 	methods: {
-		updateFilter(filterIndex) {
+		updateFilter(filterIndex, filterName) {
+			this.$store.commit('GET_FILTER_CHOICE', filterName);
 			this.$refs.items[filterIndex].classList.toggle('tag-active');
 		}
 	}

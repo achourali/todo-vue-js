@@ -5,11 +5,11 @@
 			<div v-clickOutside="closeModal">
 				<DotsHorizontalIcon class="h-5 w-5" @click="openModal" />
 				<div class="todo_actions flex flex-col rounded-lg" v-if="showModal">
-					<div class="px-3.5 py-2 border-b-2 flex items-center justify-between">
+					<div class="px-3.5 py-2 border-b-2 flex items-center justify-between" @click="handleEditTodo">
 						<p>Edit</p>
 						<PencilAltIcon class="h-5 w-5" />
 					</div>
-					<div class="px-3.5 py-2 flex items-center justify-between" @click="deleteTodo">
+					<div class="px-3.5 py-2 flex items-center justify-between" @click="deleteTodo(todo.id)">
 						<p>Delete</p>
 						<TrashIcon class="h-5 w-5" />
 					</div>
@@ -31,7 +31,7 @@
 					:id="'checkbox' + index"
 					ref="todoInput"
 					v-model="todo.complete"
-					@click="toggleComplete"
+					@click="toggleComplete(todo)"
 				/>
 			</div>
 		</div>
@@ -71,9 +71,6 @@ export default {
 			uri: 'http://localhost:3000/todos/' + this.todo.id
 		};
 	},
-	directives: {
-		clickOutside
-	},
 	methods: {
 		openModal() {
 			this.showModal = !this.showModal;
@@ -83,26 +80,28 @@ export default {
 			this.showModal = false;
 			document.body.style.overflow = 'auto';
 		},
-		deleteTodo() {
-			fetch(this.uri, {
-				method: 'DELETE'
-			})
-				.then(() => this.$emit('delete', this.todo.id))
-				.catch((err) => console.log(err));
+		deleteTodo(todoID) {
+			this.$store
+				.dispatch('deleteTodo', { todoID: todoID })
+				.then((res) => {
+					this.closeModal();
+				})
+				.then((response) => {
+					this.$store.dispatch('fetchTodo');
+				});
 		},
-		toggleComplete() {
-			fetch(this.uri, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					complete: !this.todo.complete
-				})
-			})
-				.then(() => {
-					this.$emit('complete', this.todo.id);
-				})
-				.catch((err) => console.log(err));
+		toggleComplete(todo) {
+			this.$store.dispatch('updateComplete', {
+				id: todo.id,
+				complete: todo.complete
+			});
+		},
+		handleEditTodo() {
+			this.$store.dispatch('handleFormStatusModal', { editTodoStatus: true, todo: this.todo });
 		}
+	},
+	directives: {
+		clickOutside
 	},
 	mounted() {
 		if (this.$refs.todoInput.checked) {

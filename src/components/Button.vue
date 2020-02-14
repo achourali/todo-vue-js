@@ -5,15 +5,7 @@
 </template>
 
 <script>
-export default {
-	props: ['openModal', 'closeModal'],
-	data() {
-		return {
-			showModal: false
-		};
-	},
-	methods: {}
-};
+export default {};
 </script>
 
 <style></style>

@@ -6,10 +6,7 @@
 <script>
 export default {
 	name: 'Tag',
-	props: ['tagName'],
-	data() {
-		return {};
-	}
+	props: ['tagName']
 };
 </script>
 

@@ -30,7 +30,6 @@ div {
 	background: theme('colors.milk');
 	color: theme('colors.gray');
 }
-
 h1 {
 	position: relative;
 }
